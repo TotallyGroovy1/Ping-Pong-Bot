@@ -1,4 +1,5 @@
 from configparser import ConfigParser
+import keyboard
 
 config = ConfigParser()
 config.read("ping.ini")
@@ -6,55 +7,92 @@ default = "default"
 ping = "ping"
 p1 = "player1"
 p2 = "player2"
-p1match = "p1match"
-p2match = "p2match"
+p1set = "p1set"
+p2set = "p2set"
+win_set = "win_set"
 win_match = "win_match"
-win_round = "win_round"
 
-def clear_round():
+def clear_match():
     config.set(default, p1,"0")
     config.set(default, p2, "0")
     with open("pong.ini", "w") as f:
         config.write(f)
 
-def p1_wins():
-    val = int(config.get(default,p1))
+def check_match_win():
+    if config.get(default, p1set) == 3:
+        print("Player 1 has won the match")
+    elif config.get(default, p2set) == 3:
+        print("Player 2 has won the match")
+    else:
+        pass
+
+def check_set_win():
+    if config.get(default, p1) == 11:
+        print("player 1 won this set")
+        p1_win_set()
+    elif config.get(default, p2) == 11:
+        print("Player 2 won this set")
+        p2_win_set()
+    else:
+        pass
+
+def check_set_tie():
+    if config.get(default, p1) and config.get(default, p2) == 10:
+        print("You now need to win by two")
+    else:
+        pass
+
+def p1_win_set():
+    val = int(config.get(default,p1set))
     newval = val+1
-    config.set(default, p1, newval)
+    config.set(default, p1set, newval)
     with open("pong.ini") as f:
         config.write(f)
-def p2_wins():
-    val = int(config.get(default,p2))
+def p2_win_set():
+    val = int(config.get(default,p2set))
     newval = val+1
-    config.set(default, p2, newval)
+    config.set(default, p2set, newval)
     with open("pong.ini") as f:
         config.write(f)
+
+def p1_win_point():
+    val = int(config.get(default, p1))
+    newval = val+1
+    config.set(default, p1, str(newval))
+    with open("pong.ini", "w") as f:
+        config.write(f)
+    check_set_tie()
+    check_set_win()
+def p2_win_point():
+    val = int(config.get(default, p2))
+    newval = val+1
+    config.set(default, p2, str(newval))
+    with open("pong.ini", "w") as f:
+        config.write(f)
+    check_set_tie()
+    check_set_win()
+
+
+
 
 config.set(default, p1 ,"0")
 config.set(default, p2 ,"0")
-config.set(default, p1match ,"0")
-config.set(default, p2match ,"0")
+config.set(default, p1set,"0")
+config.set(default, p2set,"0")
 with open("ping.ini", "w") as f:
     config.write(f)
 
-if config.get(default, p1) and config.get(default, p2) == 10:
-    print("Must win by 2")
-elif config.get(default, p1) >= 10:
-    pass
-elif config.get(default, p1) == 11:
-    print("player 1 won this round, match two begins")
-    p1_wins()
-
-elif config.get(default, p2) >= 10:
-    pass
-elif config.get(default, p2) == 11:
-    print("player 2 won this round, match two begins")
-    p2_wins()
-
-if config.get(default, p1match) > 3:
-    pass
-elif config.get(default, p1match) == 3:
-    print("p1 has won this match, the next ")
+def game():
+    while config.get(default, p1set) and config.get(default, p2set) != 11:
+        check_match_win()
+        if keyboard.read_key() == "left":
+            print("left")
+            p1_win_point()
+            continue
+        elif keyboard.read_key() == 'right':
+            print("right")
+            p2_win_point()
+            continue
 
 
-num_of_rnds = input("how many rounds do you want to play?")
+game()
