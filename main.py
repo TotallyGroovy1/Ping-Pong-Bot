@@ -30,11 +30,21 @@ def clear_match():
         config.write(f)
 
 def check_match_win():
-    if config.get(default, p1set) == "3":
+    if config.get(default, p1set) == config.get(default, win_match):
         print("Player 1 has won the match")
+        win.fill([255,255,255])
+        p1_win = point_font.render("Player 1 Won!!", 1, (0,0,0))
+        win.blit(p1_win, (200-p1_win.get_width()/2, 100-p1_win.get_height()/2))
+        pygame.display.update()
+        pygame.time.wait(5000)
         clear_all()
-    elif config.get(default, p2set) == "3":
+    elif config.get(default, p2set) == config.get(default, win_match):
         print("Player 2 has won the match")
+        win.fill([255,255,255])
+        p2_win = point_font.render("Player 2 Won!!", 1, (0,0,0))
+        win.blit(p2_win, (200-p2_win.get_width()/2, 100-p2_win.get_height()/2))
+        pygame.display.update()
+        pygame.time.wait(5000)
         clear_all()
     else:
         pass
@@ -87,7 +97,7 @@ def check_set_tie():
         print("You now need to win by two")
         config.set(default, tie, "true")
         with open("ping.ini","w") as f:
-            config.write(f)
+            config.write(f)       
     else:
         pass
 
@@ -122,10 +132,11 @@ config.set(default, p2set, "0")
 config.set(default, tie, "false")
 with open("ping.ini", "w") as f:
     config.write(f)
-    
+
 pygame.init()
 win = pygame.display.set_mode((400,200))
 pygame.display.set_caption("Table Tennis Scoring Bot")
+
 
 def redraw_window():
     pygame.draw.rect(win, (255,255,255), (0, 0, 400, 50))
