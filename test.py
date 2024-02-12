@@ -1,5 +1,7 @@
 from configparser import ConfigParser
 import keyboard
+import customtkinter as ctk
+from pynput import keyboard
 
 config = ConfigParser()
 config.read("ping.ini")
@@ -110,10 +112,36 @@ config.set(default, p2set, "0")
 config.set(default, tie, "false")
 with open("ping.ini", "w") as f:
     config.write(f)
-
+"""     keyboard.add_hotkey('left', p1_win_point)
+    keyboard.add_hotkey('right', p2_win_point)
+    keyboard.wait() """
 def game():
     check_match_win()
-    keyboard.add_hotkey('left', p1_win_point)
-    keyboard.add_hotkey('right', p2_win_point)
-    keyboard.wait()
+
+    listener = keyboard.GlobalHotKeys({
+        '<left>': p1_win_point,
+        '<right>': p2_win_point})
+    listener.start()
+    
+    root = ctk.CTk()
+
+    frame1 = ctk.CTkFrame(root)
+
+
+
+    frame2 = ctk.CTkFrame(root)
+
+
+
+    frame3 = ctk.CTkFrame(root)
+
+
+
+    frame1.grid()
+    frame2.grid()
+    frame3.grid()
+    root.mainloop()  
+    while True:
+        pass  
+
 game()
