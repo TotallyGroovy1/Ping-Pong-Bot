@@ -115,7 +115,6 @@ def p2_win_point():
     check_set_tie()
     check_set_win()
 
-
 config.set(default, p1, "0")
 config.set(default, p2, "0")
 config.set(default, p1set, "0")
@@ -123,13 +122,10 @@ config.set(default, p2set, "0")
 config.set(default, tie, "false")
 with open("ping.ini", "w") as f:
     config.write(f)
-
+    
 pygame.init()
 win = pygame.display.set_mode((400,200))
 pygame.display.set_caption("Table Tennis Scoring Bot")
-
-
-score = config.get(default, p1)
 
 def redraw_window():
     pygame.draw.rect(win, (255,255,255), (0, 0, 400, 50))
@@ -153,11 +149,6 @@ def redraw_window():
     win.blit(playerTwoSetNum,(300-playerTwoSetNum.get_width()/2,109))
     pygame.display.update()
 
-""" playerOneScoreNum = font.render(config.get(default, p1set), 1, (0,0,0))
-playerTwoScoreNum = font.render(config.get(default, p2set), 1, (0,0,0))
-win.blit(playerOneScoreNum,(151, 16.5))
-win.blit(playerTwoScoreNum,(351, 16.5)) """
-
 point_font = pygame.font.SysFont('timesnewroman', 30, True)
 set_font = pygame.font.SysFont('timesnewroman', 20, True)
 font = pygame.font.SysFont('timesnewroman', 15, True)
@@ -174,7 +165,5 @@ while run:
                 p2_win_point()
     win.fill([0,0,0])
     redraw_window()
-
-
 
 pygame.quit()            
