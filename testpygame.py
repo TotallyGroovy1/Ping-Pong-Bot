@@ -38,6 +38,19 @@ def check_match_win():
         clear_all()
     else:
         pass
+def matchpoint():
+    if config.get(default, tie) == "true":
+        if config.get(default, p1) == int(config.get(default, p2))+1:
+            match_point.play()
+            pass
+        elif config.get(default, p2) == int(config.get(default, p1))+1:
+            match_point.play()
+            
+    elif config.get(default, tie) == "false":
+        if config.get(default, p1) == "10" or config.get(default, p2) == "10":
+            match_point.play()
+            pass
+    
 
 def p1_win_set():
     val = config.get(default,p1set)
@@ -88,6 +101,7 @@ def check_set_tie():
         config.set(default, tie, "true")
         with open("ping.ini","w") as f:
             config.write(f)
+        overtime.play()
     else:
         pass
 
@@ -100,6 +114,7 @@ def p1_win_point():
     playerOneSetNum = point_font.render(config.get(default, p1), 1, (0,0,0))
     win.blit(playerOneSetNum,(100-playerOneSetNum.get_width()/2,109))
     pygame.display.update()
+    matchpoint()
     check_set_tie()
     check_set_win()
 
@@ -111,7 +126,8 @@ def p2_win_point():
         config.write(f)
     playerTwoSetNum = point_font.render(config.get(default, p2), 1, (0,0,0))
     win.blit(playerTwoSetNum,(300-playerTwoSetNum.get_width()/2,109))
-    pygame.display.update() 
+    pygame.display.update()
+    matchpoint() 
     check_set_tie()
     check_set_win()
 
@@ -149,6 +165,9 @@ def redraw_window():
     win.blit(playerTwoSetNum,(300-playerTwoSetNum.get_width()/2,109))
     pygame.display.update()
 
+match_point = pygame.mixer.Sound('audio\\matchpoint.mp3')
+endgame = pygame.mixer.Sound('audio\\endgame.mp3')
+overtime = pygame.mixer.Sound('audio\\overtime.mp3')
 point_font = pygame.font.SysFont('timesnewroman', 30, True)
 set_font = pygame.font.SysFont('timesnewroman', 20, True)
 font = pygame.font.SysFont('timesnewroman', 15, True)
