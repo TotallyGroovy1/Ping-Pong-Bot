@@ -3,7 +3,7 @@ import keyboard
 import pygame
 from pygame.locals import *
 config = ConfigParser()
-config.read("ping.ini")
+config.read("test.ini")
 default = "default"
 p1set = config.get(default, "p1set")
 p2set = config.get(default, "p2set")
@@ -19,14 +19,14 @@ class player(object):
         val = config.get(default, f"{self.player}set")
         newval = int(val)+1
         config.set(default, f"{self.player}set", str(newval))
-        with open("ping.ini","w") as f:
+        with open("test.ini","w") as f:
             config.write(f)
     
     def win_point(self):
         val = config.get(default, self.player)
         newval = int(val)+1
         config.set(default, self.player, str(newval))
-        with open("ping.ini", "w") as f:
+        with open("test.ini", "w") as f:
             config.write(f)
 
     def clear_all(self):
